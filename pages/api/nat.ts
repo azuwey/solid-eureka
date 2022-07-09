@@ -74,8 +74,10 @@ export default async function handler(
 
   const nationalities = await prisma.nationality.findMany();
   for (const nationality of nationalities) {
-    aggregatedNationalityDetails[nationality.abbreviation].numberOfVotes =
-      nationality.voteCount;
+    if (aggregatedNationalityDetails[nationality.abbreviation]) {
+      aggregatedNationalityDetails[nationality.abbreviation].numberOfVotes =
+        nationality.voteCount;
+    }
   }
 
   res.status(200).json(aggregatedNationalityDetails);

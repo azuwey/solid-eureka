@@ -9,8 +9,8 @@ const prisma = new PrismaClient();
 export type AggregatedNationalityDetails = {
   [key: string]: {
     country: string;
-    voteCount: number;
-    entries: number;
+    numberOfVotes: number;
+    numberOfCitizens: number;
     randomPictureUrl: string;
   };
 };
@@ -50,11 +50,11 @@ export default async function handler(
       const abbreviation = currentResult.nat.toUpperCase();
 
       if (data[abbreviation]) {
-        data[abbreviation].entries += 1;
+        data[abbreviation].numberOfCitizens += 1;
       } else {
         data[abbreviation] = {
-          voteCount: 0,
-          entries: 1,
+          numberOfVotes: 0,
+          numberOfCitizens: 1,
           country: currentResult.location.country,
           randomPictureUrl: currentResult.picture.large,
         };
@@ -69,7 +69,7 @@ export default async function handler(
 
   const nationalities = await prisma.nationality.findMany();
   for (const nationality of nationalities) {
-    aggregatedNationalityDetails[nationality.abbreviation].voteCount =
+    aggregatedNationalityDetails[nationality.abbreviation].numberOfVotes =
       nationality.voteCount;
   }
 

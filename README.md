@@ -1,6 +1,10 @@
 # Solid-eureka
 
+[![Vercel](http://therealsujitk-vercel-badge.vercel.app/?app=solid-eureka)](https://solid-eureka.vercel.app/)
+
 Solid-eureka is a mock country nationality application with Typescript, Next.JS, REST, React and Tailwind.
+
+Deployed application accessible [here](https://solid-eureka.vercel.app/).
 
 ## Installation
 

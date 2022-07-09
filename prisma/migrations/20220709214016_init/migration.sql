@@ -1,8 +1,10 @@
 -- CreateTable
 CREATE TABLE "Nationality" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" SERIAL NOT NULL,
     "abbreviation" TEXT NOT NULL,
-    "voteCount" INTEGER NOT NULL
+    "voteCount" INTEGER NOT NULL,
+
+    CONSTRAINT "Nationality_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

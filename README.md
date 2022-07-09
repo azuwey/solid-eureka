@@ -8,6 +8,24 @@ Solid-eureka is a mock country nationality application with Typescript, Next.JS,
 npm install
 ```
 
+## Setting up the database
+
+Before you can run the application you need to set up the database connection by creating a `.env` file with the
+following content:
+
+```text
+DATABASE_URL="postgresql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>?schema=<SCHEMA>"
+```
+
+Short explanation of each component:
+
+- `<USER>`: The name of your database user
+- `<PASSWORD>`: The password for your database user
+- `<HOST>`: The name of your host name (for the local environment, it is `localhost`)
+- `<PORT>`: The port where your database server is running (typically `5432` for PostgreSQL)
+- `<DATABASE>`: The name of the [database](https://www.postgresql.org/docs/12/manage-ag-overview.html)
+- `<SCHEMA>`: The name of the [schema](https://www.postgresql.org/docs/12/ddl-schemas.html) inside the database
+
 ## Running the application
 
 To run the application you first need to migrate the database by running the following command:
@@ -48,7 +66,7 @@ Now you should be able to access the application at `http://localhost:3000`.
 
 ## Tech stack
 
-- Prisma with SQLite
+- Prisma with PostgreSQL
 - Typescript
 - Next.JS
 - React

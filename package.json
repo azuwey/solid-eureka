@@ -2,6 +2,7 @@
   "name": "solid-eureka",
   "version": "0.1.0",
   "private": true,
+  "description": "Solid-eureka is a mock country nationality application.",
   "scripts": {
     "build": "next build",
     "start:dev": "next dev",

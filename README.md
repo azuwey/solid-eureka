@@ -1,6 +1,6 @@
 # Solid-eureka
 
-Solid-eureka is a mock country voting application with Typescript, Next.JS, REST, React and Tailwind.
+Solid-eureka is a mock country nationality application with Typescript, Next.JS, REST, React and Tailwind.
 
 ## Installation
 

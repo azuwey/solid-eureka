@@ -18,7 +18,7 @@ const NationalityListContainer = () => {
         currentData = Object.assign({}, currentData, {
           [abbreviation]: {
             ...currentData[abbreviation],
-            numberOfVotes: currentData[abbreviation].numberOfVotes + 1,
+            numberOfVotes: currentData[abbreviation].numberOfVotes + (voteType === VOTE_TYPE.UP_VOTE ? 1 : -1),
           },
         });
       }

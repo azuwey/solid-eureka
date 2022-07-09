@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
 const API_URL =
-  "https://randomuser.me/api/?results=1000&inc=location,picture,nat&seed=flightright";
+  "https://randomuser.me/api/?results=300&nat=de,dk,fr,gb&inc=id,gender,name,location,email,dob,picture,nat&seed=flightright";
 const RANDOM_CHANCE = 0.36;
 const prisma = new PrismaClient();
 

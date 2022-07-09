@@ -40,8 +40,13 @@ type ApiResult = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<AggregatedNationalityDetails>
+  res: NextApiResponse
 ) {
+  if (req.method !== "GET") {
+    res.status(405).send({ message: "Only GET requests allowed" });
+    return;
+  }
+
   const response = await fetch(API_URL);
   const data: ApiResult = await response.json();
 

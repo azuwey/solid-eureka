@@ -1,12 +1,14 @@
 import React from "react";
 import Badge from "@components/Badge";
 import type { AggregatedNationalityDetails } from "@pages/api/nat";
+import { VOTE_TYPE } from "@utils/api/vote";
 
 interface Props {
-  nationalities: AggregatedNationalityDetails
+  nationalities: AggregatedNationalityDetails;
+  onVote: (abbreviation: string, voteType: VOTE_TYPE) => void;
 }
 
-const NationalityList = ({ nationalities }: Props) => {
+const NationalityList = ({ nationalities, onVote }: Props) => {
   return (
     <div className="mt-6 grid grid-cols-1 gap-y-6">
       {Object.keys(nationalities).map((abbreviation) => (
@@ -38,13 +40,11 @@ const NationalityList = ({ nationalities }: Props) => {
             <div className="grid grid-cols-2 mt-4 col-span-1 gap-3 lg:mt-0 lg:col-span-2 lg:flex lg:flex-row lg:justify-end">
               <Badge
                 label="Up vote"
-                onClick={() => console.log(`Vote up: ${abbreviation}`)}
+                onClick={() => onVote(abbreviation, VOTE_TYPE.UP_VOTE)}
               />
               <Badge
                 label="Down vote"
-                onClick={() =>
-                  console.log(`Vote down: ${abbreviation}`)
-                }
+                onClick={() => onVote(abbreviation, VOTE_TYPE.DOWN_VOTE)}
               />
             </div>
           </div>
@@ -52,6 +52,6 @@ const NationalityList = ({ nationalities }: Props) => {
       ))}
     </div>
   );
-}
+};
 
 export default NationalityList;

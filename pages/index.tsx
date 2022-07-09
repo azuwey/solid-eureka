@@ -8,7 +8,10 @@ const Home: NextPage = () => {
     <div className="min-h-screen h-full w-screen bg-gray-100">
       <Head>
         <title>Solid Eureka</title>
-        <meta name="description" content="Mock country voting application" />
+        <meta
+          name="description"
+          content="Mock nationality voting application"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

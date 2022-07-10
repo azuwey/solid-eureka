@@ -2,23 +2,25 @@
 
 [![Vercel](http://therealsujitk-vercel-badge.vercel.app/?app=solid-eureka)](https://solid-eureka.vercel.app/)
 
-Solid-eureka is a mock country nationality application with Typescript, Next.JS, REST, React and Tailwind.
+Solid-eureka is a mock country nationality application with Typescript, Next.JS, REST, Prisma, PostgreSQL, React and
+Tailwind.
 
 Deployed application accessible [here](https://solid-eureka.vercel.app/).
 
-## Installation
+## Requirements
 
-```bash
-npm install
-```
+- `npx 8.x or up`
+- `Node.JS 16.x or up` or `Docker or Podman`
 
-## Setting up the database
+## Setting up the application
+
+## Database setup
 
 Before you can run the application you need to set up the database connection by creating a `.env` file with the
 following content:
 
 ```text
-DATABASE_URL="postgresql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>?schema=<SCHEMA>"
+DATABASE_URL=postgres://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>
 ```
 
 Short explanation of each component:
@@ -28,18 +30,23 @@ Short explanation of each component:
 - `<HOST>`: The name of your host name (for the local environment, it is `localhost`)
 - `<PORT>`: The port where your database server is running (typically `5432` for PostgreSQL)
 - `<DATABASE>`: The name of the [database](https://www.postgresql.org/docs/12/manage-ag-overview.html)
-- `<SCHEMA>`: The name of the [schema](https://www.postgresql.org/docs/12/ddl-schemas.html) inside the database
 
-## Running the application
+### Running the application in production mode
 
-To run the application you first need to migrate the database by running the following command:
+#### Running the migrations
+
+To run the migrations you need to run the following command:
 
 ```shell
 npx prisma migrate deploy
 ```
 
-After you migrated the database, you can use the following commands to build and then run the application in production
-mode:
+Or if you would like to run the migration manually you can find the migration files under the
+[`prisma/migrations/*`](/prisma/migrations) folder, but make sure you run them in chronologically order.
+
+#### Without docker
+
+You can use the following commands to build and then run the application in production mode:
 
 ```shell
 # Builds the application
@@ -51,16 +58,38 @@ npm run start:prod
 
 Now you should be able to access it at `http://localhost:3000/`.
 
-## Development
+#### With docker or podman
 
-To run the development build you need to run the client and server application at the same time, but first you need to
-migrate the database running the following command:
+To run the application in a containerized environment first you need to build it by running one of these commands:
+
+```shell
+# With docker
+docker build -t solid-eureka-container .
+
+# or with podman
+podman build -t solid-eureka-container .
+```
+
+After you built the image, you can use one of these commands to run the application:
+
+```shell
+# With docker
+docker run -p 3000:3000 --env-file=.env solid-eureka-container
+
+# or with podman
+podman run -p 3000:3000 --env-file=.env solid-eureka-container
+```
+
+### Running the application in development mode
+
+Before you can the application, you need two things, the first on is making sure that you have `database creation`
+permission, and the second one is running the following command to run the migrations:
 
 ```shell
 npx prisma migrate dev
 ```
 
-After that you can use the following commands to run both application in development mode:
+After that you can use the following commands to run the application in development mode:
 
 ```shell
 npm run start:dev
@@ -68,44 +97,38 @@ npm run start:dev
 
 Now you should be able to access the application at `http://localhost:3000`.
 
-## Tech stack
-
-- Prisma with PostgreSQL
-- Typescript
-- Next.JS
-- React
-- Tailwind
-- SWR
-
 ## Taught process
 
-Since the application needed two parts a back-end and a front-end I choose to use Next.JS because it's fairly easy to
-do these two things using it.
+I choose to use Next.js to solve the challenge, because it is easy to implement both the front-end and the back-end side
+of the application with only using one framework.
 
-First I design the front-end part of the application with Tailwind, and made use of the mobile first breakpoint system,
-after that because I already knew what fields I'm going to need it was pretty easy to implement the back-end side of
-things.
+On the back-end side of things, as the problem required for the `/nat` endpoint, I used `fetch` to `GET` the data from
+`randomuser.me` API, after that I aggregate the data into one object, after that I query the database to get all the
+voting data and change include it on the above mention object and in the last step I send it to the client as `JSON`.
 
-On the back-end side first I implemented the `/nat` endpoint which make use of the 3rd party `randomuser.me` API. After
-that I implemented the `/vote` end-point, and I designed in a way, that it can basically use any variation of the
-`abbreviation` because it only depends on what the client sends to this end-point. On the front-end part I used
-optimistic data update for the vote, because this way we don't have to wait for the server to answer our client, but
-the UI can update with the new data.
+The other endpoint is the `/vote` this responsible to store a new vote in the database.
 
-## Database
+On the database side of things, I design a very small database only with one table called `Nationality`, this has two
+plus one field, on of these field is called `abbreviation`, this stores the `nat` field from the API as a unique
+uppercase string, the other one is `voteCount`, as the name suggest this stores the number of votes, and the last one is
+the `id`, as the name suggest this a unique identification number.
 
-The database is pretty small, there are only two fields:
+On the front-end side of thing I choose to use Tailwind because it's a framework-agnostic css framework with great
+mobile-first support.
 
-- `abbreviation`: this stores the `nat` field from the API as uppercase string
-- `voteCount`: as the name suggest this stores the number of votes
+To query the data from the API I used SWR, because it doesn't need a lot of setup, and it has optimistic update
+functionality, this is useful in the application, because we don't need to block the UI while we wait for the API to
+answer our request, and still update the UI with the correct data.
 
-The migrations can be found under the [`prisma/migrations`](/prisma/migrations) folder.
+I choose to use container - presentation pattern to separate the data loading logic into a different component than the
+presentation, so it can be more readable, and it is easier to test it even though I didn't write any test for this
+application.
 
 ## Questions
 
-- When first I have seen the task I was thinking about storing data that come from the `randomuser.me` API, since the seed
-is always the same, so my question is: is it would have been an acceptable solution to store this data in a database, so
-not using the `randomuser.me` API only in the seeding process?
+- When first I have seen the task I was thinking about storing data that come from the `randomuser.me` API, since the
+seed is always the same, so my question is: is it would have been an acceptable solution to store this data in a
+database, so not using the `randomuser.me` API only in the seeding process?
 - Do I have to use the 
 `https://randomuser.me/api/?results=300&nat=de,dk,fr,gb&inc=id,gender,name,location,email,dob,picture,nat&seed=flightright`
 endpoint or is it acceptable to use this:

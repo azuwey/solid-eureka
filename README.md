@@ -14,7 +14,7 @@ Deployed application accessible [here](https://solid-eureka.vercel.app/).
 
 ## Setting up the application
 
-## Database setup
+### Database setup
 
 Before you can run the application you need to set up the database connection by creating a `.env` file with the
 following content:

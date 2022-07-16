@@ -31,6 +31,12 @@ Short explanation of each component:
 - `<PORT>`: The port where your database server is running (typically `5432` for PostgreSQL)
 - `<DATABASE>`: The name of the [database](https://www.postgresql.org/docs/12/manage-ag-overview.html)
 
+### Installing the dependencies
+
+```shell
+npm i
+```
+
 ### Running the application in production mode
 
 #### Running the migrations
